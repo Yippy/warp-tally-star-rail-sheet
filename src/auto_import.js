@@ -298,28 +298,33 @@ function checkPages(urlForWarpHistory, bannerSheet, bannerName, bannerSettings, 
     } else {
       var message = jsonDict["message"];
       var title ="Error code: "+jsonDict["retcode"];
-      SpreadsheetApp.getActiveSpreadsheet().toast(message, title);
-      if (AUTO_IMPORT_URL_ERROR_CODE_AUTHKEY_DENIED == jsonDict["retcode"]) {
-        errorCodeNotEncountered = false;
-        is_done = true;
-        settingsSheet.getRange(bannerSettings['range_status']).setValue("feedback URL\nNo Longer Works");
-      } else if (AUTO_IMPORT_URL_ERROR_CODE_AUTH_TIMEOUT == jsonDict["retcode"]) {
-        errorCodeNotEncountered = false;
-        is_done = true;
-        settingsSheet.getRange(bannerSettings['range_status']).setValue("auth timeout");
-      } else if (AUTO_IMPORT_URL_ERROR_CODE_AUTH_INVALID == jsonDict["retcode"]) {
-        errorCodeNotEncountered = false;
-        is_done = true;
-        settingsSheet.getRange(bannerSettings['range_status']).setValue("auth invalid");
-      } else if (AUTO_IMPORT_URL_ERROR_CODE_REQUEST_PARAMS == jsonDict["retcode"]) {
-        errorCodeNotEncountered = false;
-        is_done = true;
-        settingsSheet.getRange(bannerSettings['range_status']).setValue("Change server setting");
-      }
-
-      failed++;
-      if (failed > 2){
-        is_done = true;
+      if (AUTO_IMPORT_URL_ERROR_CODE_VISIT_TOO_FREQUENTLY == jsonDict["retcode"]) {
+        // Ignore this error code, ensure failed isn't triggered for this.
+        SpreadsheetApp.getActiveSpreadsheet().toast(message+"\n\nWaiting for "+AUTO_IMPORT_WAIT_FOR_NEXT_API_CALL_IN_SECONDS+" second, before calling API", title);
+        Utilities.sleep(AUTO_IMPORT_WAIT_FOR_NEXT_API_CALL_IN_SECONDS*1000);
+      } else {
+        SpreadsheetApp.getActiveSpreadsheet().toast(message, title);
+        if (AUTO_IMPORT_URL_ERROR_CODE_AUTHKEY_DENIED == jsonDict["retcode"]) {
+          errorCodeNotEncountered = false;
+          is_done = true;
+          settingsSheet.getRange(bannerSettings['range_status']).setValue("feedback URL\nNo Longer Works");
+        } else if (AUTO_IMPORT_URL_ERROR_CODE_AUTH_TIMEOUT == jsonDict["retcode"]) {
+          errorCodeNotEncountered = false;
+          is_done = true;
+          settingsSheet.getRange(bannerSettings['range_status']).setValue("auth timeout");
+        } else if (AUTO_IMPORT_URL_ERROR_CODE_AUTH_INVALID == jsonDict["retcode"]) {
+          errorCodeNotEncountered = false;
+          is_done = true;
+          settingsSheet.getRange(bannerSettings['range_status']).setValue("auth invalid");
+        } else if (AUTO_IMPORT_URL_ERROR_CODE_REQUEST_PARAMS == jsonDict["retcode"]) {
+          errorCodeNotEncountered = false;
+          is_done = true;
+          settingsSheet.getRange(bannerSettings['range_status']).setValue("Change server setting");
+        }
+        failed++;
+        if (failed > 2){
+          is_done = true;
+        }
       }
     }
   }
