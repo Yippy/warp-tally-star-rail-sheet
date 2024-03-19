@@ -43,12 +43,14 @@ function addFormulaWarpHistory() {
   }
 }
 
-function addFormulaByWarpHistoryName(name) {
+function addFormulaByWarpHistoryName(name, settingsSheet = null) {
   var sheetSource = getSourceDocument();
   if (sheetSource) {
     // Add Language
     var warpHistorySource;
-    var settingsSheet = getSettingsSheet();
+    if (!settingsSheet) {
+      settingsSheet = getSettingsSheet();
+    }
     if (settingsSheet) {
       var languageFound = settingsSheet.getRange(2, 2).getValue();
       warpHistorySource = sheetSource.getSheetByName(WARP_TALLY_WARP_HISTORY_SHEET_NAME+"-"+languageFound);

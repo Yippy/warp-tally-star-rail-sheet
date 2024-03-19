@@ -129,16 +129,29 @@ function saveEventsSettings(eventsSheet, settingsSheet) {
 
 function restoreEventsSettings(sheetEvents, settingsSheet) {
   var saveData = settingsSheet.getRange("G4").getValue().split(",");
+  var formulas = sheetEvents.getRange(2,8,saveData.length, 1).getFormulas();
+  var saveInEvents = [];
   for (var ii = 0; ii < saveData.length; ii++) {
     var valueData = saveData[ii];
     if (valueData == "TRUE") {
-      sheetEvents.getRange(2 + ii,8).setValue(true);
+      saveInEvents.push([true])
     } else if (valueData) {
       if (valueData != "") {
-        sheetEvents.getRange(2 + ii,8).setValue(valueData);
+        saveInEvents.push([valueData])
+      } else {
+        saveInEvents.push([null])
       }
+    } else {
+      saveInEvents.push([null])
     }
   }
+  // Override values if formulas exist on the cell.
+  var data = saveInEvents.map(function(row, i) {
+    return row.map(function(col, j) {
+      return formulas[i][j] || col;
+    });
+  });
+  sheetEvents.getRange(2,8,data.length,1).setValues(data);
 }
 
 function saveCollectionSettings(constellationsSheet, settingsSheet, itemsRange, optionsRange) {
