@@ -53,8 +53,7 @@ function GET_SPREADSHEET_ID() {
     return spreadsheetId;
 }
 
-function reorderSheets() {
-  var settingsSheet = getSettingsSheet();
+function reorderSheets(settingsSheet) {
   if (settingsSheet) {
     var sheetsToSort = settingsSheet.getRange(28,2,15,1).getValues();
 
@@ -485,7 +484,7 @@ function quickUpdate() {
     }
   }
   var currentSheet = SpreadsheetApp.getActive().getActiveSheet();
-  reorderSheets();
+  reorderSheets(settingsSheet);
   SpreadsheetApp.getActive().setActiveSheet(currentSheet);
   // Update Settings
   settingsSheet.getRange(9, 7).setValue(false);
@@ -590,7 +589,7 @@ function updateItemsList() {
       var listOfSheetsLength = listOfSheets.length;
       // Check if sheet exist
       for (var i = 0; i < listOfSheetsLength; i++) {
-        findWarpHistoryByName(listOfSheets[i], sheetSource);
+        findWarpHistoryByName(listOfSheets[i], sheetSource, settingsSheet);
       }
 
       // Add Language
@@ -614,7 +613,7 @@ function updateItemsList() {
 
       // Refresh spreadsheet
       for (var i = 0; i < listOfSheetsLength; i++) {
-        addFormulaByWarpHistoryName(listOfSheets[i]);
+        addFormulaByWarpHistoryName(listOfSheets[i], settingsSheet);
         /*
         var sheetOld = SpreadsheetApp.getActive().getSheetByName(listOfSheets[i]);
         var sheetCopySource = sheetSource.getSheetByName(listOfSheets[i]);
@@ -811,7 +810,7 @@ function updateItemsList() {
         SpreadsheetApp.getActiveSpreadsheet().deleteSheet(placeHolderSheet);
       }
       
-      reorderSheets();
+      reorderSheets(settingsSheet);
       // Bring Pity Checker into view
       
       SpreadsheetApp.getActive().setActiveSheet(sheetPityChecker);
