@@ -1,12 +1,12 @@
 /*
- * Version 1.00 made by yippym - 2023-05-02 19:00
+ * Version 1.02 made by yippym - 2024-08-14 19:00
  * https://github.com/Yippy/warp-tally-star-rail-sheet
  */
 // Warp Tally Const
 var WARP_TALLY_SHEET_SOURCE_REDIRECT_ID = '1hGTMKN1tJkTJOdxTtaEBSEgf1mg4JCYV-h1j9jufnuk';
 var WARP_TALLY_SHEET_SUPPORTED_LOCALE = "en_GB";
 var WARP_TALLY_SHEET_TOOLBAR_NAME = "Warp Tally";
-var WARP_TALLY_SHEET_SCRIPT_VERSION = 1.00;
+var WARP_TALLY_SHEET_SCRIPT_VERSION = 1.02;
 var WARP_TALLY_SHEET_SCRIPT_IS_ADD_ON = false;
 
 // Auto Import Const
@@ -42,8 +42,8 @@ var AUTO_IMPORT_ADDITIONAL_QUERY = [
   "device_type=pc"
 ];
 
-var AUTO_IMPORT_URL = "https://api-os-takumi.mihoyo.com/common/gacha_record/api/getGachaLog";
-var AUTO_IMPORT_URL_CHINA = "https://api-takumi.mihoyo.com/event/gacha_info/api/getGachaLog";
+var AUTO_IMPORT_URL = "https://public-operation-hkrpg-sg.hoyoverse.com/common/gacha_record/api/getGachaLog";
+var AUTO_IMPORT_URL_CHINA = "https://public-operation-hkrpg.mihoyo.com/common/gacha_record/api/getGachaLog";
 
 
 var AUTO_IMPORT_URL_ERROR_CODE_AUTH_TIMEOUT = -101;

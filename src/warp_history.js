@@ -1,5 +1,5 @@
 /*
- * Version 1.00 made by yippym - 2023-05-02 19:00
+ * Version 1.02 made by yippym - 2024-08-14 19:00
  * https://github.com/Yippy/warp-tally-star-rail-sheet
  */
 
