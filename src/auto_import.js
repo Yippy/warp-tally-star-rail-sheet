@@ -1,5 +1,5 @@
 /*
- * Version 1.02 made by yippym - 2024-08-14 19:00
+ * Version 1.03 made by yippym - 2025-09-17 01:00
  * https://github.com/Yippy/warp-tally-star-rail-sheet
  */
 function extractAuthKeyFromInput(userInput) {
@@ -26,6 +26,7 @@ function testAuthKeyInputValidity(userInput) {
   const USING_BANNER = WARP_TALLY_STELLAR_WARP_SHEET_NAME;
 
   var settingsSheet = getSettingsSheet();
+  var queryBannerAPI = AUTO_IMPORT_BANNER_SETTINGS_FOR_IMPORT[USING_BANNER]["gacha_api"];
   var queryBannerCode = AUTO_IMPORT_BANNER_SETTINGS_FOR_IMPORT[USING_BANNER]["gacha_type"];
   var selectedServer = settingsSheet.getRange("B3").getValue();
   var languageSettings = AUTO_IMPORT_LANGUAGE_SETTINGS_FOR_IMPORT[settingsSheet.getRange("B2").getValue()];
@@ -34,7 +35,7 @@ function testAuthKeyInputValidity(userInput) {
     languageSettings = AUTO_IMPORT_LANGUAGE_SETTINGS_FOR_IMPORT["English"];
   }
   var urlForWarpHistory = selectedServer == "China" ? AUTO_IMPORT_URL_CHINA : AUTO_IMPORT_URL;
-  urlForWarpHistory += "?" + AUTO_IMPORT_ADDITIONAL_QUERY.join("&") + "&authkey=" + authKey + "&lang=" + languageSettings['code'] + "&gacha_type=" + queryBannerCode;
+  urlForWarpHistory += queryBannerAPI + "?" + AUTO_IMPORT_ADDITIONAL_QUERY.join("&") + "&authkey=" + authKey + "&lang=" + languageSettings['code'] + "&gacha_type=" + queryBannerCode;
 
   responseJson = JSON.parse(UrlFetchApp.fetch(urlForWarpHistory).getContentText());
   if (responseJson.retcode === 0) {
@@ -85,8 +86,8 @@ var errorCodeNotEncountered = true;
 function importFromAPI(urlForAPI) {
   errorCodeNotEncountered = true;
   var settingsSheet = getSettingsSheet();
-  settingsSheet.getRange("E42").setValue(new Date());
-  settingsSheet.getRange("E43").setValue("");
+  settingsSheet.getRange("E44").setValue(new Date());
+  settingsSheet.getRange("E45").setValue("");
 
   if (AUTO_IMPORT_URL_FOR_API_BYPASS != "") {
     urlForAPI = AUTO_IMPORT_URL_FOR_API_BYPASS;
@@ -116,7 +117,7 @@ function importFromAPI(urlForAPI) {
     } else {
       urlForWarpHistory = AUTO_IMPORT_URL;
     }
-    urlForWarpHistory += "?"+AUTO_IMPORT_ADDITIONAL_QUERY.join("&")+"&authkey="+foundAuth+"&lang="+languageSettings['code'];
+    var urlForWarpHistorySuffix = "?"+AUTO_IMPORT_ADDITIONAL_QUERY.join("&")+"&authkey="+foundAuth+"&lang="+languageSettings['code'];
     errorCodeNotEncountered = true;
     // Clear status
     for (var i = 0; i < WARP_TALLY_NAME_OF_WARP_HISTORY.length; i++) {
@@ -128,11 +129,12 @@ function importFromAPI(urlForAPI) {
       if (errorCodeNotEncountered) {
         bannerName = WARP_TALLY_NAME_OF_WARP_HISTORY[i];
         bannerSettings = AUTO_IMPORT_BANNER_SETTINGS_FOR_IMPORT[bannerName];
+        var queryBannerAPI = bannerSettings["gacha_api"];
         var isToggled = settingsSheet.getRange(bannerSettings['range_toggle']).getValue();
         if (isToggled == true) {
           bannerSheet = SpreadsheetApp.getActive().getSheetByName(bannerName);
           if (bannerSheet) {
-            checkPages(urlForWarpHistory, bannerSheet, bannerName, bannerSettings, languageSettings, settingsSheet);
+            checkPages(urlForWarpHistory+queryBannerAPI+urlForWarpHistorySuffix, bannerSheet, bannerName, bannerSettings, languageSettings, settingsSheet);
           } else {
             settingsSheet.getRange(bannerSettings['range_status']).setValue("Missing sheet");
           }
@@ -145,7 +147,7 @@ function importFromAPI(urlForAPI) {
       }
     }
   }
-  settingsSheet.getRange("E43").setValue(new Date());
+  settingsSheet.getRange("E45").setValue(new Date());
 }
 
 function checkPages(urlForWarpHistory, bannerSheet, bannerName, bannerSettings, languageSettings, settingsSheet) {

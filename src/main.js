@@ -1,17 +1,17 @@
 /*
- * Version 1.02 made by yippym - 2024-08-14 19:00
+ * Version 1.03 made by yippym - 2025-09-17 01:00
  * https://github.com/Yippy/warp-tally-star-rail-sheet
  */
 var dashboardEditRange = [
   "I5", // Status cell
   "AB28", // Document Version
-  "AT40", // Current Document Version
+  "AT50", // Current Document Version
   "T29", // Document Status
   "AV1", // Name of drop down 1 (import)
   "AV2", // Name of drop down 2 (auto import)
   "AG14", // Selection
   "AG16", // Subtitle of selection
-  "A40" // Method of checking script enabled
+  "A50" // Method of checking script enabled
 ];
 
 // Cells that needs Pity Checker
@@ -24,7 +24,13 @@ var dashboardRefreshRange = [
   "K21", // Stellar Total
   "G25", // Light Cone 5-Star
   "G26", // Light Cone 4-Star
-  "K26" // Light Cone Total
+  "K26", // Light Cone Total
+  "G30", // Character Collaboration 5-Star
+  "G31", // Character Collaboration 4-Star
+  "K31", // Character Collaboration Total
+  "G35", // Light Cone Collaboration 5-Star
+  "G36", // Light Cone Collaboration 4-Star
+  "K36" // Light Cone Collaboration Total
 ];
 
 /**
@@ -288,6 +294,12 @@ function restorePityCheckerSettings(sheetPityChecker, settingsSheet) {
     // Departure Warp History
     sheetPityChecker.hideColumns(38)
     sheetPityChecker.showColumns(40)
+    // Character Collaboration Warp
+    sheetPityChecker.hideColumns(106)
+    sheetPityChecker.showColumns(108)
+    // Light Cone Collaboration Warp History
+    sheetPityChecker.hideColumns(118)
+    sheetPityChecker.showColumns(120)
   } else {
     // Character Event Warp
     sheetPityChecker.showColumns(2)
@@ -301,6 +313,12 @@ function restorePityCheckerSettings(sheetPityChecker, settingsSheet) {
     // Departure Warp History
     sheetPityChecker.showColumns(38)
     sheetPityChecker.hideColumns(40)
+    // Character Collaboration Warp
+    sheetPityChecker.showColumns(106)
+    sheetPityChecker.hideColumns(108)
+    // Light Cone Collaboration Warp History
+    sheetPityChecker.showColumns(118)
+    sheetPityChecker.hideColumns(120)
   }
   if (itemNameFor5Star) {
     // Character Event Warp
@@ -315,6 +333,12 @@ function restorePityCheckerSettings(sheetPityChecker, settingsSheet) {
     // Departure Warp History
     sheetPityChecker.hideColumns(44)
     sheetPityChecker.showColumns(46)
+    // Character Collaboration Warp
+    sheetPityChecker.hideColumns(112)
+    sheetPityChecker.showColumns(114)
+    // Light Cone Collaboration Warp History
+    sheetPityChecker.hideColumns(124)
+    sheetPityChecker.showColumns(126)
   } else {
     // Character Event Warp
     sheetPityChecker.showColumns(8)
@@ -328,6 +352,12 @@ function restorePityCheckerSettings(sheetPityChecker, settingsSheet) {
     // Departure Warp History
     sheetPityChecker.showColumns(44)
     sheetPityChecker.hideColumns(46)
+    // Character Collaboration Warp
+    sheetPityChecker.showColumns(112)
+    sheetPityChecker.hideColumns(114)
+    // Light Cone Collaboration Warp History
+    sheetPityChecker.showColumns(124)
+    sheetPityChecker.hideColumns(126)
   }
 }
 
@@ -598,7 +628,14 @@ function updateItemsList() {
         }
       }
       
-      var listOfSheets = [WARP_TALLY_CHARACTER_EVENT_WARP_SHEET_NAME,WARP_TALLY_STELLAR_WARP_SHEET_NAME,WARP_TALLY_LIGHT_CONE_EVENT_WARP_SHEET_NAME,WARP_TALLY_DEPARTURE_WARP_SHEET_NAME];
+      var listOfSheets = [
+        WARP_TALLY_CHARACTER_EVENT_WARP_SHEET_NAME,
+        WARP_TALLY_STELLAR_WARP_SHEET_NAME,
+        WARP_TALLY_LIGHT_CONE_EVENT_WARP_SHEET_NAME,
+        WARP_TALLY_DEPARTURE_WARP_SHEET_NAME,
+        WARP_TALLY_CHARACTER_COLLABORATION_WARP_SHEET_NAME,
+        WARP_TALLY_LIGHT_CONE_COLLABORATION_WARP_SHEET_NAME
+      ];
       var listOfSheetsLength = listOfSheets.length;
       // Check if sheet exist
       for (var i = 0; i < listOfSheetsLength; i++) {

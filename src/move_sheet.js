@@ -1,5 +1,5 @@
 /*
- * Version 1.02 made by yippym - 2024-08-14 19:00
+ * Version 1.03 made by yippym - 2025-09-17 01:00
  * https://github.com/Yippy/warp-tally-star-rail-sheet
  */
 function moveToSettingsSheet() {
@@ -24,6 +24,14 @@ function moveToLightConeEventWarpHistorySheet() {
 
 function moveToDepartureWarpHistorySheet() {
   moveToSheetByName(WARP_TALLY_DEPARTURE_WARP_SHEET_NAME);
+}
+
+function moveToCharacterCollaborationWarpHistorySheet() {
+  moveToSheetByName(WARP_TALLY_CHARACTER_COLLABORATION_WARP_SHEET_NAME);
+}
+
+function moveToLightConeCollaborationWarpHistorySheet() {
+  moveToSheetByName(WARP_TALLY_LIGHT_CONE_COLLABORATION_WARP_SHEET_NAME);
 }
 
 function moveToChangelogSheet() {

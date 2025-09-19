@@ -1,38 +1,72 @@
 /*
- * Version 1.02 made by yippym - 2024-08-14 19:00
+ * Version 1.03 made by yippym - 2025-09-17 01:00
  * https://github.com/Yippy/warp-tally-star-rail-sheet
  */
 // Warp Tally Const
 var WARP_TALLY_SHEET_SOURCE_REDIRECT_ID = '1hGTMKN1tJkTJOdxTtaEBSEgf1mg4JCYV-h1j9jufnuk';
 var WARP_TALLY_SHEET_SUPPORTED_LOCALE = "en_GB";
 var WARP_TALLY_SHEET_TOOLBAR_NAME = "Warp Tally";
-var WARP_TALLY_SHEET_SCRIPT_VERSION = 1.02;
+var WARP_TALLY_SHEET_SCRIPT_VERSION = 1.03;
+var WARP_TALLY_SHEET_SCRIPT_MIGRATION_V1_03_VERSION = 1.03;
 var WARP_TALLY_SHEET_SCRIPT_IS_ADD_ON = false;
 
 // Auto Import Const
 /* Add URL here to avoid showing on Sheet */
 var AUTO_IMPORT_URL_FOR_API_BYPASS = ""; // Optional
 var AUTO_IMPORT_BANNER_SETTINGS_FOR_IMPORT = {
-  "Character Event Warp History": { "range_status": "E44", "range_toggle": "E37", "gacha_type": 11 },
-  "Stellar Warp History": { "range_status": "E45", "range_toggle": "E38", "gacha_type": 1 },
-  "Light Cone Event Warp History": { "range_status": "E46", "range_toggle": "E39", "gacha_type": 12 },
-  "Departure Warp History": { "range_status": "E47", "range_toggle": "E40", "gacha_type": 2 },
+  "Character Event Warp History": {
+    "range_status": "E46",
+    "range_toggle": "E37",
+    "gacha_type": 11,
+    "gacha_api": "getGachaLog"
+  },
+  "Stellar Warp History": {
+    "range_status": "E47",
+    "range_toggle": "E38",
+    "gacha_type": 1,
+    "gacha_api": "getGachaLog"
+  },
+  "Light Cone Event Warp History": {
+    "range_status":
+    "E48",
+    "range_toggle": "E39",
+    "gacha_type": 12,
+    "gacha_api": "getGachaLog"
+  },
+  "Departure Warp History": {
+    "range_status": "E49",
+    "range_toggle": "E40",
+    "gacha_type": 2,
+    "gacha_api": "getGachaLog"
+  },
+  "Character Collaboration Warp History": {
+    "range_status": "E50",
+    "range_toggle": "E41",
+    "gacha_type": 21,
+    "gacha_api": "getLdGachaLog"
+  },
+  "Light Cone Collaboration Warp History": {
+    "range_status": "E51",
+    "range_toggle": "E42",
+    "gacha_type": 22,
+    "gacha_api": "getLdGachaLog"
+  },
 };
 
 var AUTO_IMPORT_LANGUAGE_SETTINGS_FOR_IMPORT = {
-  "English": { "code": "en", "full_code": "en-us", "4_star": " (4-Star)", "5_star": " (5-Star)", "gacha_type_11": "Character Event Warp", "gacha_type_12": "Light Cone Event Warp", "gacha_type_1": "Stellar Warp", "gacha_type_2": "Departure Warp" },
-  "German": { "code": "de", "full_code": "de-de", "4_star": " (4 Sterne)", "5_star": " (5 Sterne)", "gacha_type_11": "Figuren-Aktionswarp", "gacha_type_12": "Lichtkegel-Aktionswarp", "gacha_type_1": "Stellarwarp", "gacha_type_2": "Startwarp" },
-  "French": { "code": "fr", "full_code": "fr-fr", "4_star": " (4★)", "5_star": " (5★)", "gacha_type_11": "Saut hyperespace événement de personnage", "gacha_type_12": "Saut hyperespace événement de cônes de lumière", "gacha_type_1": "Saut stellaire", "gacha_type_2": "Saut hyperespace de départ" },
-  "Spanish": { "code": "es", "full_code": "es-es", "4_star": " (4★)", "5_star": " (5★)", "gacha_type_11": "Salto de evento de personaje", "gacha_type_12": "Salto de evento de cono de luz", "gacha_type_1": "Salto estelar", "gacha_type_2": "Salto de partida" },
-  "Chinese Traditional": { "code": "zh-tw", "full_code": "zh-tw", "4_star": " (四星)", "5_star": " (五星)", "gacha_type_11": "角色活動躍遷", "gacha_type_12": "光錐活動躍遷", "gacha_type_1": "群星躍遷", "gacha_type_2": "始發躍遷" },
-  "Chinese Simplified": { "code": "zh-cn", "full_code": "zh-cn", "4_star": " (四星)", "5_star": " (五星)", "gacha_type_11": "角色活动跃迁", "gacha_type_12": "光锥活动跃迁", "gacha_type_1": "群星跃迁", "gacha_type_2": "始发跃迁" },
-  "Indonesian": { "code": "id", "full_code": "id-id", "4_star": " (4★)", "5_star": " (5★)", "gacha_type_11": "Event Warp Karakter", "gacha_type_12": "Event Warp Light Cone", "gacha_type_1": "Warp Bintang-Bintang", "gacha_type_2": "Warp Keberangkatan" },
-  "Japanese": { "code": "ja", "full_code": "ja-jp", "4_star": " (★4)", "5_star": " (★5)", "gacha_type_11": "イベント跳躍・キャラクター", "gacha_type_12": "イベント跳躍・光円錐", "gacha_type_1": "群星跳躍", "gacha_type_2": "始発跳躍" },
-  "Vietnamese": { "code": "vi", "full_code": "vi-vn", "4_star": " (4 sao)", "5_star": " (5 sao)", "gacha_type_11": "Bước Nhảy Sự Kiện Nhân Vật", "gacha_type_12": "Bước Nhảy Sự Kiện Nón Ánh Sáng", "gacha_type_1": "Bước Nhảy Chòm Sao", "gacha_type_2": "Bước Nhảy Đầu Tiên" },
-  "Korean": { "code": "ko", "full_code": "ko-kr", "4_star": " (★4)", "5_star": " (★5)", "gacha_type_11": "캐릭터 이벤트 워프", "gacha_type_12": "광추 이벤트 워프", "gacha_type_1": "뭇별의 워프", "gacha_type_2": "초행길 워프" },
-  "Portuguese": { "code": "pt", "full_code": "pt-pt", "4_star": " (4★)", "5_star": " (5★)", "gacha_type_11": "Salto Hiperespacial de Evento de Personagem", "gacha_type_12": "Salto Hiperespacial de Evento de Cone de Luz", "gacha_type_1": "Salto Hiperespacial Estelar", "gacha_type_2": "Salto Hiperespacial de Novatos" },
-  "Thai": { "code": "th", "full_code": "th-th", "4_star": " (4 ดาว)", "5_star": " (5 ดาว)", "gacha_type_11": "กิจกรรมวาร์ปตัวละคร", "gacha_type_12": "กิจกรรมวาร์ป Light Cone", "gacha_type_1": "วาร์ปสู่ดวงดาว", "gacha_type_2": "ก้าวแรกแห่งการวาร์ป" },
-  "Russian": { "code": "ru", "full_code": "ru-ru", "4_star": " (4★)", "5_star": " (5★)", "gacha_type_11": "Прыжок события: Персонаж", "gacha_type_12": "Прыжок события: Световой конус", "gacha_type_1": "Звёздный Прыжок", "gacha_type_2": "Отправной Прыжок" },
+  "English": { "code": "en", "full_code": "en-us", "4_star": " (4-Star)", "5_star": " (5-Star)", "gacha_type_11": "Character Event Warp", "gacha_type_12": "Light Cone Event Warp", "gacha_type_1": "Stellar Warp", "gacha_type_2": "Departure Warp", "gacha_type_21": "Character Collaboration Warp", "gacha_type_22": "Light Cone Collaboration Warp" },
+  "German": { "code": "de", "full_code": "de-de", "4_star": " (4 Sterne)", "5_star": " (5 Sterne)", "gacha_type_11": "Figuren-Aktionswarp", "gacha_type_12": "Lichtkegel-Aktionswarp", "gacha_type_1": "Stellarwarp", "gacha_type_2": "Startwarp", "gacha_type_21": "Figuren-Kollaborationswarp", "gacha_type_22": "Lichtkegel-Kollaborationswarp" },
+  "French": { "code": "fr", "full_code": "fr-fr", "4_star": " (4★)", "5_star": " (5★)", "gacha_type_11": "Saut hyperespace événement de personnage", "gacha_type_12": "Saut hyperespace événement de cônes de lumière", "gacha_type_1": "Saut stellaire", "gacha_type_2": "Saut hyperespace de départ", "gacha_type_21": "Saut de collaboration de personnage", "gacha_type_22": "Saut événement de collaboration de cône de lumière" },
+  "Spanish": { "code": "es", "full_code": "es-es", "4_star": " (4★)", "5_star": " (5★)", "gacha_type_11": "Salto de evento de personaje", "gacha_type_12": "Salto de evento de cono de luz", "gacha_type_1": "Salto estelar", "gacha_type_2": "Salto de partida", "gacha_type_21": "Salto de personaje de colaboración", "gacha_type_22": "Salto de cono de luz de colaboración" },
+  "Chinese Traditional": { "code": "zh-tw", "full_code": "zh-tw", "4_star": " (四星)", "5_star": " (五星)", "gacha_type_11": "角色活動躍遷", "gacha_type_12": "光錐活動躍遷", "gacha_type_1": "群星躍遷", "gacha_type_2": "始發躍遷", "gacha_type_21": "「角色聯動躍遷」", "gacha_type_22": "「光錐聯動躍遷」" },
+  "Chinese Simplified": { "code": "zh-cn", "full_code": "zh-cn", "4_star": " (四星)", "5_star": " (五星)", "gacha_type_11": "角色活动跃迁", "gacha_type_12": "光锥活动跃迁", "gacha_type_1": "群星跃迁", "gacha_type_2": "始发跃迁", "gacha_type_21": "「角色联动跃迁」", "gacha_type_22": "「光锥联动跃迁」" },
+  "Indonesian": { "code": "id", "full_code": "id-id", "4_star": " (4★)", "5_star": " (5★)", "gacha_type_11": "Event Warp Karakter", "gacha_type_12": "Event Warp Light Cone", "gacha_type_1": "Warp Bintang-Bintang", "gacha_type_2": "Warp Keberangkatan", "gacha_type_21": "Warp Kolaborasi Karakter", "gacha_type_22": "Warp Kolaborasi Light Cone" },
+  "Japanese": { "code": "ja", "full_code": "ja-jp", "4_star": " (★4)", "5_star": " (★5)", "gacha_type_11": "イベント跳躍・キャラクター", "gacha_type_12": "イベント跳躍・光円錐", "gacha_type_1": "群星跳躍", "gacha_type_2": "始発跳躍", "gacha_type_21": "「コラボ跳躍・キャラクター」", "gacha_type_22": "「コラボ跳躍・光円錐」" },
+  "Vietnamese": { "code": "vi", "full_code": "vi-vn", "4_star": " (4 sao)", "5_star": " (5 sao)", "gacha_type_11": "Bước Nhảy Sự Kiện Nhân Vật", "gacha_type_12": "Bước Nhảy Sự Kiện Nón Ánh Sáng", "gacha_type_1": "Bước Nhảy Chòm Sao", "gacha_type_2": "Bước Nhảy Đầu Tiên", "gacha_type_21": "Bước Nhảy Nhân Vật Hợp Tác", "gacha_type_22": "Bước Nhảy Nón Ánh Sáng Hợp Tác" },
+  "Korean": { "code": "ko", "full_code": "ko-kr", "4_star": " (★4)", "5_star": " (★5)", "gacha_type_11": "캐릭터 이벤트 워프", "gacha_type_12": "광추 이벤트 워프", "gacha_type_1": "뭇별의 워프", "gacha_type_2": "초행길 워프", "gacha_type_21": "「캐릭터 콜라보 워프」", "gacha_type_22": "「광추 콜라보 워프」" },
+  "Portuguese": { "code": "pt", "full_code": "pt-pt", "4_star": " (4★)", "5_star": " (5★)", "gacha_type_11": "Salto Hiperespacial de Evento de Personagem", "gacha_type_12": "Salto Hiperespacial de Evento de Cone de Luz", "gacha_type_1": "Salto Hiperespacial Estelar", "gacha_type_2": "Salto Hiperespacial de Novatos", "gacha_type_21": "Salto Hiperespacial de Colaboração de Personagem", "gacha_type_22": "Salto Hiperespacial de Colaboração de Cone de Luz" },
+  "Thai": { "code": "th", "full_code": "th-th", "4_star": " (4 ดาว)", "5_star": " (5 ดาว)", "gacha_type_11": "กิจกรรมวาร์ปตัวละคร", "gacha_type_12": "กิจกรรมวาร์ป Light Cone", "gacha_type_1": "วาร์ปสู่ดวงดาว", "gacha_type_2": "ก้าวแรกแห่งการวาร์ป", "gacha_type_21": '"กิจกรรมวาร์ปตัวละครคอลแลบ"', "gacha_type_22": '"กิจกรรมวาร์ป Light Cone คอลแลบ"' },
+  "Russian": { "code": "ru", "full_code": "ru-ru", "4_star": " (4★)", "5_star": " (5★)", "gacha_type_11": "Прыжок события: Персонаж", "gacha_type_12": "Прыжок события: Световой конус", "gacha_type_1": "Звёздный Прыжок", "gacha_type_2": "Отправной Прыжок", "gacha_type_21": "Совместный Прыжок события: Персонаж", "gacha_type_22": "Совместный Прыжок события: Световой конус" },
 };
 
 var AUTO_IMPORT_ADDITIONAL_QUERY = [
@@ -42,9 +76,8 @@ var AUTO_IMPORT_ADDITIONAL_QUERY = [
   "device_type=pc"
 ];
 
-var AUTO_IMPORT_URL = "https://public-operation-hkrpg-sg.hoyoverse.com/common/gacha_record/api/getGachaLog";
-var AUTO_IMPORT_URL_CHINA = "https://public-operation-hkrpg.mihoyo.com/common/gacha_record/api/getGachaLog";
-
+var AUTO_IMPORT_URL = "https://public-operation-hkrpg-sg.hoyoverse.com/common/gacha_record/api/";
+var AUTO_IMPORT_URL_CHINA = "https://public-operation-hkrpg.mihoyo.com/common/gacha_record/api/";
 
 var AUTO_IMPORT_URL_ERROR_CODE_AUTH_TIMEOUT = -101;
 var AUTO_IMPORT_URL_ERROR_CODE_AUTH_INVALID = -100;
@@ -64,6 +97,8 @@ var WARP_TALLY_CHARACTER_EVENT_WARP_SHEET_NAME = "Character Event Warp History";
 var WARP_TALLY_LIGHT_CONE_EVENT_WARP_SHEET_NAME = "Light Cone Event Warp History";
 var WARP_TALLY_STELLAR_WARP_SHEET_NAME = "Stellar Warp History";
 var WARP_TALLY_DEPARTURE_WARP_SHEET_NAME = "Departure Warp History";
+var WARP_TALLY_CHARACTER_COLLABORATION_WARP_SHEET_NAME = "Character Collaboration Warp History";
+var WARP_TALLY_LIGHT_CONE_COLLABORATION_WARP_SHEET_NAME = "Light Cone Collaboration Warp History";
 var WARP_TALLY_WARP_HISTORY_SHEET_NAME = "Warp History";
 var WARP_TALLY_SETTINGS_SHEET_NAME = "Settings";
 var WARP_TALLY_DASHBOARD_SHEET_NAME = "Dashboard";
@@ -88,7 +123,7 @@ var WARP_TALLY_AVAILABLE_SHEET_NAME = "Available";
 var WARP_TALLY_SHARD_CALCULATOR_SHEET_NAME = "Shard Calculator";
 var WARP_TALLY_ALL_WARP_HISTORY_SHEET_NAME = "All Warp History";
 var WARP_TALLY_ITEMS_SHEET_NAME = "Items";
-var WARP_TALLY_NAME_OF_WARP_HISTORY = [WARP_TALLY_CHARACTER_EVENT_WARP_SHEET_NAME, WARP_TALLY_STELLAR_WARP_SHEET_NAME, WARP_TALLY_LIGHT_CONE_EVENT_WARP_SHEET_NAME, WARP_TALLY_DEPARTURE_WARP_SHEET_NAME];
+var WARP_TALLY_NAME_OF_WARP_HISTORY = [WARP_TALLY_CHARACTER_EVENT_WARP_SHEET_NAME, WARP_TALLY_STELLAR_WARP_SHEET_NAME, WARP_TALLY_LIGHT_CONE_EVENT_WARP_SHEET_NAME, WARP_TALLY_DEPARTURE_WARP_SHEET_NAME, WARP_TALLY_CHARACTER_COLLABORATION_WARP_SHEET_NAME, WARP_TALLY_LIGHT_CONE_COLLABORATION_WARP_SHEET_NAME];
 
 // Import Const
 var IMPORT_STATUS_COMPLETE = "COMPLETE";

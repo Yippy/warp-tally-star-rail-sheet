@@ -1,5 +1,5 @@
 /*
- * Version 1.02 made by yippym - 2024-08-14 19:00
+ * Version 1.03 made by yippym - 2025-09-17 01:00
  * https://github.com/Yippy/warp-tally-star-rail-sheet
  */
 function onInstall(e) {
@@ -77,6 +77,12 @@ function getDefaultMenu() {
   .addSubMenu(ui.createMenu('Departure Warp History')
             .addItem('Sort Range', 'sortDepartureWarpHistory')
             .addItem('Refresh Formula', 'addFormulaDepartureWarpHistory'))
+  .addSubMenu(ui.createMenu('Character Collaboration Warp History')
+            .addItem('Sort Range', 'sortCharacterCollaborationWarpHistory')
+            .addItem('Refresh Formula', 'addFormulaCharacterCollaborationWarpHistory'))
+  .addSubMenu(ui.createMenu('Light Cone Collaboration Warp History')
+            .addItem('Sort Range', 'sortLightConeCollaborationWarpHistory')
+            .addItem('Refresh Formula', 'addFormulaLightConeCollaborationWarpHistory'))
   .addSeparator()
   .addSubMenu(ui.createMenu('Data Management')
             .addItem('Import', 'importDataManagement')
@@ -107,6 +113,10 @@ function getSettingsSheet() {
       getDefaultMenu();
     }
   } else {
+    if (settingsSheet.getRange("H1").getValue() < WARP_TALLY_SHEET_SCRIPT_MIGRATION_V1_03_VERSION) {
+      // Settings must be edited for new Collaboration Warp
+      migrationV1_03(settingsSheet);
+    }
     settingsSheet.getRange("H1").setValue(WARP_TALLY_SHEET_SCRIPT_VERSION);
   }
   var dashboardSheet = SpreadsheetApp.getActive().getSheetByName(WARP_TALLY_DASHBOARD_SHEET_NAME);
@@ -127,4 +137,54 @@ function getSettingsSheet() {
     }
   }
   return settingsSheet;
+}
+
+function migrationV1_03(settingsSheet) {
+  settingsSheet.getRange("D13:E15").breakApart().setFontFamily('Arial').setFontSize('10').setBorder(false, null, true, null, null, null, "black", SpreadsheetApp.BorderStyle.SOLID);
+  settingsSheet.getRange("D13").setValue("Character Collaboration").setBackground("#cccccc").setFontWeight("bold");
+  settingsSheet.getRange("E13").setValue("NOT DONE").setBackground("#cccccc").setFontWeight("");
+  settingsSheet.getRange("D14").setValue("Light Cone Collaboration").setBackground("#cccccc").setFontWeight("bold");
+  settingsSheet.getRange("E14").setValue("NOT DONE").setBackground("#cccccc").setFontWeight("");
+
+  var title = "Schedule Status";
+  var text  = "Schedule Status for Toolbar Scheduler";
+  var bold  = SpreadsheetApp.newTextStyle().setBold(true).build();
+  var value = SpreadsheetApp.newRichTextValue().setText(text).setTextStyle(text.indexOf(title), title.length, bold).build();
+
+  settingsSheet.getRange("D15:E15").mergeAcross();
+  settingsSheet.getRange('D15').setRichTextValue(value).setBackground("#cccccc");
+
+  settingsSheet.getRange("D41:E41").breakApart();
+  if (settingsSheet.getRange("D42").getValue() == "Time Start") {
+    var statusOfAutoImportValues = settingsSheet.getRange("D42:E47").getValues();
+    var statusOfAutoImportNumberFormats = settingsSheet.getRange("D42:E47").getNumberFormats();
+    
+    settingsSheet.getRange("D44:E49").setValues(statusOfAutoImportValues);
+    settingsSheet.getRange("D44:E49").setNumberFormats(statusOfAutoImportNumberFormats);
+  }
+  //Character Collaboration
+  settingsSheet.getRange("D41").setValue("Character Collaboration").setBackground("#cccccc");
+  settingsSheet.getRange("E41").insertCheckboxes().setValue(true).setBackground("#ffffff");
+  if (settingsSheet.getMaxRows() == 49) {
+    settingsSheet.insertRowAfter(49);
+  }
+  settingsSheet.getRange("D50").setValue("Character Collaboration").setBackground("#cccccc");
+  settingsSheet.getRange("E50").setValue("").setBackground("#cccccc");
+
+  //Light Cone Collaboration
+  settingsSheet.getRange("D42").setValue("Light Cone Collaboration").setBackground("#cccccc");
+  settingsSheet.getRange("E42").insertCheckboxes().setValue(true).setBackground("#ffffff");
+  if (settingsSheet.getMaxRows() == 50) {
+    settingsSheet.insertRowAfter(50);
+  }
+  settingsSheet.getRange("D51").setValue("Light Cone Collaboration").setBackground("#cccccc");
+  settingsSheet.getRange("E51").setValue("").setBackground("#cccccc");
+
+  settingsSheet.getRange("D43:E43").mergeAcross();
+  settingsSheet.getRange("D43").setFontWeight("bold").setHorizontalAlignment("center").setValue("Status of Auto Import");
+
+  var sheetDashboardSource =SpreadsheetApp.getActive().getSheetByName(WARP_TALLY_DASHBOARD_SHEET_NAME);
+  if (sheetDashboardSource) {
+    SpreadsheetApp.getActiveSpreadsheet().deleteSheet(sheetDashboardSource);
+  }
 }

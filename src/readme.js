@@ -1,5 +1,5 @@
 /*
- * Version 1.02 made by yippym - 2024-08-14 19:00
+ * Version 1.03 made by yippym - 2025-09-17 01:00
  * https://github.com/Yippy/warp-tally-star-rail-sheet
  */
 function displayModalDiagram(sheet, sheetName, titleRange, htmlRange, widthSizeRange, heightSizeRange) {

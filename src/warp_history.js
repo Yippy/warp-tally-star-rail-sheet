@@ -1,5 +1,5 @@
 /*
- * Version 1.02 made by yippym - 2024-08-14 19:00
+ * Version 1.03 made by yippym - 2025-09-17 01:00
  * https://github.com/Yippy/warp-tally-star-rail-sheet
  */
 
@@ -29,6 +29,19 @@ function addFormulaDepartureWarpHistory() {
 }
 
 /**
+* Add Formula Character Collaboration Warp History
+*/
+function addFormulaCharacterCollaborationWarpHistory() {
+  addFormulaByWarpHistoryName(WARP_TALLY_CHARACTER_COLLABORATION_WARP_SHEET_NAME);
+}
+/**
+* Add Formula Light Cone Collaboration Warp History
+*/
+function addFormulaLightConeCollaborationWarpHistory() {
+  addFormulaByWarpHistoryName(WARP_TALLY_LIGHT_CONE_COLLABORATION_WARP_SHEET_NAME);
+}
+
+/**
 * Add Formula for selected Warp History sheet
 */
 function addFormulaWarpHistory() {
@@ -37,7 +50,7 @@ function addFormulaWarpHistory() {
   if (WARP_TALLY_NAME_OF_WARP_HISTORY.indexOf(warpHistoryName) != -1) {
     addFormulaByWarpHistoryName(warpHistoryName);
   } else {
-    var message = 'Sheet must be called "' + WARP_TALLY_CHARACTER_EVENT_WARP_SHEET_NAME + '" or "' + WARP_TALLY_STELLAR_WARP_SHEET_NAME + '" or "' + WARP_TALLY_LIGHT_CONE_EVENT_WARP_SHEET_NAME + '" or "' + WARP_TALLY_DEPARTURE_WARP_SHEET_NAME + '"';
+    var message = 'Sheet must be called "' + WARP_TALLY_CHARACTER_EVENT_WARP_SHEET_NAME + '" or "' + WARP_TALLY_STELLAR_WARP_SHEET_NAME + '" or "' + WARP_TALLY_LIGHT_CONE_EVENT_WARP_SHEET_NAME + '" or "' + WARP_TALLY_DEPARTURE_WARP_SHEET_NAME + '" or "' + WARP_TALLY_CHARACTER_COLLABORATION_WARP_SHEET_NAME + '" or "' + WARP_TALLY_LIGHT_CONE_COLLABORATION_WARP_SHEET_NAME + '"';
     var title = 'Invalid Sheet Name';
     SpreadsheetApp.getActiveSpreadsheet().toast(message, title);
   }
@@ -132,7 +145,7 @@ function sortWarpHistory() {
   if (WARP_TALLY_NAME_OF_WARP_HISTORY.indexOf(warpHistoryName) != -1) {
     sortWarpHistoryByName(warpHistoryName);
   } else {
-    var message = 'Sheet must be called "' + WARP_TALLY_CHARACTER_EVENT_WARP_SHEET_NAME + '" or "' + WARP_TALLY_STELLAR_WARP_SHEET_NAME + '" or "' + WARP_TALLY_LIGHT_CONE_EVENT_WARP_SHEET_NAME + '" or "' + WARP_TALLY_DEPARTURE_WARP_SHEET_NAME + '"';
+    var message = 'Sheet must be called "' + WARP_TALLY_CHARACTER_EVENT_WARP_SHEET_NAME + '" or "' + WARP_TALLY_STELLAR_WARP_SHEET_NAME + '" or "' + WARP_TALLY_LIGHT_CONE_EVENT_WARP_SHEET_NAME + '" or "' + WARP_TALLY_DEPARTURE_WARP_SHEET_NAME + '" or "' + WARP_TALLY_CHARACTER_COLLABORATION_WARP_SHEET_NAME + '" or "' + WARP_TALLY_LIGHT_CONE_COLLABORATION_WARP_SHEET_NAME +'"';
     var title = 'Invalid Sheet Name';
     SpreadsheetApp.getActiveSpreadsheet().toast(message, title);
   }
@@ -164,6 +177,20 @@ function sortLightConeEventWarpHistory() {
 */
 function sortDepartureWarpHistory() {
   sortWarpHistoryByName(WARP_TALLY_DEPARTURE_WARP_SHEET_NAME);
+}
+
+/**
+* Sort Departure Warp History
+*/
+function sortCharacterCollaborationWarpHistory() {
+  sortWarpHistoryByName(WARP_TALLY_CHARACTER_COLLABORATION_WARP_SHEET_NAME);
+}
+
+/**
+* Sort Departure Warp History
+*/
+function sortLightConeCollaborationWarpHistory() {
+  sortWarpHistoryByName(WARP_TALLY_LIGHT_CONE_COLLABORATION_WARP_SHEET_NAME);
 }
 
 function sortWarpHistoryByName(sheetName) {
